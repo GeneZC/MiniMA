@@ -1,0 +1,24 @@
+
+CUDA_LAUNCH_BLOCKING=1 torchrun --nproc_per_node=$GPU_NUM --nnodes=$NODE_WORLD_SIZE --node_rank=$NODE_RANK --master_addr=$MASTER_ADDR --master_port=$MASTER_PORT run_pretraining_llama_ds.py \
+    --model_type llama_lm \
+    --model_name_or_path llama2-7b-ada \
+    --record_path_or_regex "dir/to/builded/wudao/*.tfrecord" \
+    --data_type llama_lm \
+    --output_dir dir/to/outputs \
+    --max_length 4096 \
+    --per_device_train_batch_size 4 \
+    --num_grad_accum_steps 8 \
+    --per_device_eval_batch_size 128 \
+    --learning_rate 3e-5 \
+    --weight_decay 1e-1 \
+    --log_interval 100 \
+    --num_train_epochs 1 \
+    --lr_scheduler_type cosine \
+    --warmup_proportion 0.01 \
+    --max_grad_norm 1.0 \
+    --seed 776 \
+    --resume \
+    --use_act_ckpt \
+    --use_bf16 \
+    --deepspeed ds_config.json \
+    --model_suffix 7b_ada
