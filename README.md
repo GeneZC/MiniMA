@@ -10,23 +10,12 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 
 <img src="assests/teaser_a.jpg" alt="teaser_a" width="400" /> <img src="assests/teaser_b.jpg" alt="teaser_b" width="400" />
 
-Below is attached with detailed performance of MiniMA and MiniChat.
-
-| Model              |   MMLU   |  C-Eval  |   DROP  |   BBH  | GSM8K |   HumanEval   | 
-|:-------------------|:--------:|:--------:|:--------:|:--------:|:---------:|:--------:|
-|                    |  5-shot  |  5-shot  |  3-shot  |  3-shot  |  8-shot   |  0-shot  |
-||
-
-| Model              |   Vicuna-Bench   |  BELLE-Bench  |
-|:-------------------|:--------:|:--------:|
-||
-
-
 ## 🔗 Quick Links
 
 - [Updates](#updates)
 - [Quick Start](#quick-start)
 - [Tutorials](#tutorials)
+  - [Requirements](#requirements)
   - [Adaptation](#adaptation)
   - [Distillation](#distillation)
   - [Finetuning](#finetuning)
@@ -94,25 +83,70 @@ output_ids = model.generate(
 output_ids = output_ids[0][len(input_ids[0]):]
 output = tokenizer.decode(output_ids, skip_special_tokens=True).strip()
 # output: "def common_elements(arr1, arr2):\n    if len(arr1) == 0:\n        return []\n    if len(arr2) == 0:\n        return arr1\n\n    common_elements = []\n    for element in arr1:\n        if element in arr2:\n            common_elements.append(element)\n\n    return common_elements"
-# Multiturn conversion could be realized by continuously appending questions to `conv`.
+# Multiturn conversation could be realized by continuously appending questions to `conv`.
 ```
 
 ## Tutorials
 
 The reproductions of MiniMA and MiniChat follow several stages including adaptation of LLaMA2, distillation to MiniMA, and finetuning to MiniChat.
 
+### Requirements
+
 ### Adaptation
 
 In case of potential Chinese applications, we adapt LLaMA2 to Chinese without degrading English performance.
 
+**Tokenizer**
+
+The following is an example script (i.e., scripts/llama_expand_vocab.sh) to expand vocabulary:
+```bash
+python run_expanding_vocab_llama.py \
+    --tokenizer_dir path/to/llama2-7b \
+    --chinese_sp_path path/to/chinese_cp 
+```
+
 **Data**
 
-The following is an example script to adapt LLaMA2:
+The following is an example script (i.e., scripts/llama_build_data.sh) to build adaptation data (e.g., Pile):
 ```bash
-python
+python run_building_data_llama.py \
+    --input_dir "dir/to/pile" \
+    --input_regex "*.jsonl" \
+    --output_dir dir/to/builded/pile \
+    --tokenizer_name_or_path path/to/minima \
+    --do_lower_case \
+    --max_seq_length 4096 \
+    --num_processors 32
 ```
 
 **Training**
+
+The following is an example script (i.e., scripts/llama_lm_7b_ds.sh) to adapt LLaMA2 with 32 Nvdia A100 GPUs:
+```bash
+CUDA_LAUNCH_BLOCKING=1 torchrun --nproc_per_node=$GPU_NUM --nnodes=$WORLD_SIZE --node_rank=$RANK --master_addr=$MASTER_ADDR --master_port=$MASTER_PORT run_pretraining_llama_ds.py \
+    --model_type llama_lm \
+    --model_name_or_path /mnt/nlp-ali/usr/zhangchen3/plms/llama2-7b-ada-init \
+    --record_path_or_regex "dir/to/builded/pile/*.tfrecord" \
+    --data_type llama_lm \
+    --output_dir path/to/save/outputs \
+    --max_length 4096 \
+    --per_device_train_batch_size 4 \
+    --num_grad_accum_steps 8 \
+    --per_device_eval_batch_size 128 \
+    --learning_rate 3e-5 \
+    --weight_decay 1e-1 \
+    --log_interval 100 \
+    --num_train_epochs 1 \
+    --lr_scheduler_type cosine \
+    --warmup_proportion 0.01 \
+    --max_grad_norm 1.0 \
+    --seed 776 \
+    --resume \
+    --use_act_ckpt \
+    --use_bf16 \
+    --deepspeed ds_config.json \
+    --model_suffix 7b_ada
+```
 
 ### Distillation
 
@@ -122,13 +156,91 @@ The distillation reuses the adaptation data.
 
 **Training**
 
+The following is an example script (i.e., scripts/llama_logit_3b_from_7b_ds.sh) to distil from LLaMA2-7B to MiniMA with 16 Nvdia A100 GPUs:
+```bash
+CUDA_LAUNCH_BLOCKING=1 torchrun --nproc_per_node=$GPU_NUM --nnodes=$WORLD_SIZE --node_rank=$RANK --master_addr=$MASTER_ADDR --master_port=$MASTER_PORT run_distillation_llama_ds.py \
+    --model_type llama_lm \
+    --teacher_model_name_or_path path/to/llama2-7b-ada \
+    --student_model_name_or_path path/to/minima-3b-init \
+    --record_path_or_regex "/mnt/nlp-ali/usr/zhangchen3/builded_*_llama_4096_minichat/*.tfrecord" \
+    --data_type llama_lm \
+    --output_dir /mnt/nlp-ali/usr/zhangchen3/qs_outputs \
+    --max_length 4096 \
+    --per_device_train_batch_size 8 \
+    --num_grad_accum_steps 8 \
+    --per_device_eval_batch_size 128 \
+    --learning_rate 3e-4 \
+    --weight_decay 1e-1 \
+    --log_interval 100 \
+    --num_train_epochs 1 \
+    --lr_scheduler_type cosine \
+    --warmup_proportion 0.01 \
+    --max_grad_norm 1.0 \
+    --seed 776 \
+    --resume \
+    --use_act_ckpt \
+    --use_bf16 \
+    --deepspeed ds_config.json \
+    --layer 24 \
+    --hidden 3072 \
+    --head 24 \
+    --intermediate 8192 \
+    --model_suffix 3b_from_7b
+```
+
 ### Finetuning
 
 **Data**
 
+The following is an example script (i.e., scripts/llama_build_data_minichat.sh) to build adaptation data (e.g., Pile):
+```bash
+python run_building_data_minichat.py \
+    --input_dir minichat \
+    --input_regex "*.jsonl" \
+    --output_dir  \
+    --tokenizer_name_or_path 
+    --do_lower_case \
+    --max_seq_length 4096 \
+    --num_processors 16
+```
+
 **Training**
 
+```bash
+CUDA_LAUNCH_BLOCKING=1 torchrun --nproc_per_node=$GPU_NUM --nnodes=$WORLD_SIZE --node_rank=$RANK --master_addr=$MASTER_ADDR --master_port=$MASTER_PORT run_instruction_llama_ds.py \
+    --model_type llama_instruct \
+    --model_name_or_path x \
+    --train_record_path_or_regex x \
+    --dev_record_path_or_regex x \
+    --data_type llama_instruct \
+    --output_dir utputs \
+    --max_length 4096 \
+    --per_device_train_batch_size 16 \
+    --num_grad_accum_steps 2 \
+    --per_device_eval_batch_size 64 \
+    --learning_rate 2e-5 \
+    --weight_decay 1e-1 \
+    --log_interval 100 \
+    --num_train_epochs 3 \
+    --num_patience_epochs 2 \
+    --lr_scheduler_type cosine \
+    --warmup_proportion 0.1 \
+    --max_grad_norm 1.0 \
+    --seed 776 \
+    --resume \
+    --use_act_ckpt \
+    --use_bf16 \
+    --deepspeed ds_config.json \
+    --model_suffix 3b
+```
+
 ### Evaluation
+
+We mainly refer to the following repositories for evaluation:
+- [MMLU](https://github.com/hendrycks/test)
+- [CEval](https://github.com/hkust-nlp/ceval)
+- [DROP,BBH,HumanEval](https://github.com/declare-lab/instruct-eval)
+- [GSM8K](https://github.com/Guangxuan-Xiao/GSM8K-eval)
 
 ## Future Work
 
