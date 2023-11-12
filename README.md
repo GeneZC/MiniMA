@@ -2,7 +2,7 @@
 
 <img src="assets/logo.jpg" alt="logo" width="400"/>
 
-📑 [arXiv]() | 🤗 [HuggingFace]() ｜ 🤖 [ModelScope]()
+📑 [arXiv]() | 🤗 [HuggingFace-MiniMA](https://huggingface.co/GeneZC/MiniMA-3B) | 🤗 [HuggingFace-MiniChat](https://huggingface.co/GeneZC/MiniChat-3B) | 🤖 [ModelScope-MiniMA](https://modelscope.cn/models/GeneZC/MiniMA-3B) | 🤖 [ModelScope-MiniChat](https://modelscope.cn/models/GeneZC/MiniChat-3B)
 
 Language model (LM) distillation is a trending area that aims to distil the knowledge resided in a large teacher LM to a small student one. While various methods have been proposed to push the distillation to its limits, it is still a pain distilling LMs when a large capacity gap is exhibited between the teacher and the student LMs. The pain is mainly resulted by the curse of capacity gap, which describes that a larger teacher LM cannot always lead to a better student LM than one distilled from a smaller teacher LM due to the affect of capacity gap increment. That is, there is likely an optimal point yielding the best student LM along the scaling course of the teacher LM. Even worse, the curse of capacity gap can be only partly yet not fully lifted as indicated in previous studies.
 
@@ -90,8 +90,9 @@ Detailed tutorials can be found [here](./TUTORIAL.md).
 ## 🔮 Future Work
 
 - More diverse blend of data sources, e.g., Chinese wikipedia, books, etc.
-- Smaller models, e.g., 1.2B model, say MicoMA.
+- Smaller models, e.g., 1.2B model, say MicroMA.
 - Preference optimization, e.g., DPO to MiniChat.
+- Speculative sampling, e.g., MiniMA for LLaMA in inference efficiency.
 
 ## 🤔️ Bugs or Questions?
 
