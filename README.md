@@ -26,7 +26,7 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 
 [2023/11/14] For models <= 3B on [Open LLM Leaderboard](https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard), MiniMA surpasses ShearedLLaMA-2.7B and ranks #14, and MiniChat (potentially with data contamination) surpasses Phi1.5 and ranks #2.
 
-<img src="./assets/llmboard.png" alt="llmboard" width="400" />
+<img src="./assets/llmboard.png" alt="llmboard" width="700" />
 
 [2023/11/14] We have released the paper, uploaded the checkpoints, and updated the codebase.
 
