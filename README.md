@@ -1,14 +1,17 @@
 # 🪄 Towards the Law of Capacity Gap in Distilling Language Models
 
-<img src="assets/logo.jpg" alt="logo" width="400"/>
+<p align="center">
+<img src="assets/logo.jpg" alt="logo" width="170" class="center"/><br>
+Logo for MiniMA designed with DALL·E
+</p>
 
-📑 [arXiv]() | 🤗 [HuggingFace-MiniMA](https://huggingface.co/GeneZC/MiniMA-3B) | 🤗 [HuggingFace-MiniChat](https://huggingface.co/GeneZC/MiniChat-3B) | 🤖 [ModelScope-MiniMA](https://modelscope.cn/models/GeneZC/MiniMA-3B) | 🤖 [ModelScope-MiniChat](https://modelscope.cn/models/GeneZC/MiniChat-3B)
+📑 [arXiv](https://arxiv.org/abs/2311.07052) | 👻 [GitHub](https://github.com/GeneZC/MiniMA) | 🤗 [HuggingFace-MiniMA](https://huggingface.co/GeneZC/MiniMA-3B) | 🤗 [HuggingFace-MiniChat](https://huggingface.co/GeneZC/MiniChat-3B) | 🤖 [ModelScope-MiniMA](https://modelscope.cn/models/GeneZC/MiniMA-3B) | 🤖 [ModelScope-MiniChat](https://modelscope.cn/models/GeneZC/MiniChat-3B)
 
 Language model (LM) distillation is a trending area that aims to distil the knowledge resided in a large teacher LM to a small student one. While various methods have been proposed to push the distillation to its limits, it is still a pain distilling LMs when a large capacity gap is exhibited between the teacher and the student LMs. The pain is mainly resulted by the curse of capacity gap, which describes that a larger teacher LM cannot always lead to a better student LM than one distilled from a smaller teacher LM due to the affect of capacity gap increment. That is, there is likely an optimal point yielding the best student LM along the scaling course of the teacher LM. Even worse, the curse of capacity gap can be only partly yet not fully lifted as indicated in previous studies.
 
 However, the tale is not ever one-sided. Although a larger teacher LM has better performance than a smaller teacher LM, it is much more resource-demanding especially in the context of recent large LMs (LLMs). Consequently, instead of sticking to lifting the curse, leaving the curse as is should be arguably fine. Even better, in this paper, we reveal that the optimal capacity gap is almost consistent across different student scales and architectures, fortunately turning the curse into the law of capacity gap. The law later guides us to distil a 3B student LM (termed MiniMA) from a 7B teacher LM (adapted LLaMA2-7B). MiniMA is demonstrated to yield a new compute-performance pareto frontier among existing 3B LMs on commonly used benchmarks, and its instruction-tuned version (termed MiniChat) outperforms a wide range of 3B competitors in GPT4 evaluation and could even compete with several 7B chat models. 
 
-<img src="./assets/teaser_a.jpg" alt="teaser_a" width="400" /> <img src="./assets/teaser_b.jpg" alt="teaser_b" width="387" align="" />
+<img src="./assets/teaser_a.jpg" alt="teaser_a" width="400" /> <img src="./assets/teaser_b.jpg" alt="teaser_b" width="387"/>
 
 ## 🔗 Quick Links
 
@@ -89,10 +92,10 @@ Detailed tutorials can be found [here](./TUTORIAL.md).
 
 ## 🔮 Future Work
 
-- More diverse blend of data sources, e.g., Chinese wikipedia, books, etc.
+- A more diverse blend of data sources, e.g., Chinese wikipedia, books, etc.
 - Smaller models, e.g., 1.2B model, say MicroMA.
-- Preference optimization, e.g., DPO to MiniChat.
-- Speculative sampling, e.g., MiniMA for LLaMA in inference efficiency.
+- Combined with preference optimization, e.g., DPO to MiniChat.
+- Designed for speculative sampling, e.g., MiniMA to LLaMA for inference efficiency.
 
 ## 🤔️ Bugs or Questions?
 
@@ -107,7 +110,7 @@ Please cite our paper if you find the repo helpful in your work:
     title={Towards the Law of Capacity Gap in Distilling Language Models},
     author={Zhang, Chen and Song, Dawei and Ye, Zheyu and Gao, Yan},
     year={2023},
-    url={}
+    url={https://arxiv.org/abs/2311.07052}
 }
 ```
 

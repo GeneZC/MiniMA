@@ -1,0 +1,25 @@
+
+CUDA_LAUNCH_BLOCKING=1 torchrun --nproc_per_node=$GPU_NUM --nnodes=$NODE_WORLD_SIZE --node_rank=$NODE_RANK --master_addr=$MASTER_ADDR --master_port=$MASTER_PORT run_instruction_llama_lora_ds.py \
+    --model_type llama_instruct \
+    --model_name_or_path path/to/minima-3b \
+    --train_record_path_or_regex "dir/to/sharegpt/*.train.tfrecord" \
+    --dev_record_path_or_regex "dir/to/sharegpt/*.dev.tfrecord" \
+    --data_type llama_instruct \
+    --output_dir dir/to/outputs \
+    --max_length 4096 \
+    --per_device_train_batch_size 16 \
+    --num_grad_accum_steps 2 \
+    --per_device_eval_batch_size 64 \
+    --learning_rate 2e-5 \
+    --weight_decay 1e-1 \
+    --log_interval 100 \
+    --num_train_epochs 3 \
+    --num_patience_epochs 2 \
+    --lr_scheduler_type cosine \
+    --warmup_proportion 0.1 \
+    --max_grad_norm 1.0 \
+    --seed 776 \
+    --resume \
+    --use_bf16 \
+    --deepspeed ds_config.json \
+    --model_suffix 3b_minichat
