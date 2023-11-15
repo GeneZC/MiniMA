@@ -265,3 +265,4 @@ We mainly refer to the following repositories for evaluation:
 - CEval: https://github.com/hkust-nlp/ceval
 - DROP, BBH, HumanEval: https://github.com/declare-lab/instruct-eval
 - GSM8K: https://github.com/Guangxuan-Xiao/GSM8K-eval
+- Vicuna-Bench, BELLE-Bench: https://github.com/Neutralzz/BiLLa/tree/main/eval_codes

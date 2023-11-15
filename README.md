@@ -24,7 +24,9 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 
 ## 🕰️ Updates
 
-[2023/11/14] For models <= 3B on [Open LLM Leaderboard](https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard), MiniMA surpasses ShearedLLaMA-2.7B and ranks #14, and MiniChat (potentially with data contamination) surpasses Phi1.5 and ranks #2.
+[2023/11/15] Wait, what!? MiniMA2 is on the way! Just stay tuned ; ) The release is scheduled at the begining of year 2024 and hopefully it could be timely.
+
+[2023/11/14] For models <= 3B on [Open LLM Leaderboard](https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard), MiniMA surpasses ShearedLLaMA-2.7B and ranks #14, and MiniChat (potentially with unidentified data contamination) surpasses Phi1.5 and ranks #2.
 
 <img src="./assets/llmboard.png" alt="llmboard" width="700" />
 
