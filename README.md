@@ -15,12 +15,12 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 
 ## 🔗 Quick Links
 
-- [Updates](#updates)
-- [Quick Start](#quick-start)
-- [Tutorials](#tutorials)
-- [Future Work](#future-work)
-- [Bugs or Questions?](#bugs-or-questions)
-- [Citation](#citation)
+- [Updates](#🕰️-updates)
+- [Quick Start](#✨-quick-start)
+- [Tutorials](#📖-tutorials)
+- [Future Work](#🔮-future-work)
+- [Bugs or Questions?](#🤔️-bugs-or-questions)
+- [Citation](#✍🏻-citation)
 
 ## 🕰️ Updates
 
