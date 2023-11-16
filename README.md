@@ -24,7 +24,7 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 
 ## 🕰️ Updates
 
-[2023/11/14] MiniChat-3B achieves a win rate of 76.94 on [AlpacaEval Leaderboard](https://tatsu-lab.github.io/alpaca_eval/), surpassing Vicuna-7B v1.3 and leaving large room to improve.
+[2023/11/16] MiniChat-3B achieves a win rate of 76.94 on [AlpacaEval Leaderboard](https://tatsu-lab.github.io/alpaca_eval/), surpassing Vicuna-7B v1.3 and leaving large room to improve.
 
 <img src="./assets/alpacaeval.jpg" alt="alpacaeval" width="200" />
 
