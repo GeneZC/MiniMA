@@ -24,6 +24,10 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 
 ## 🕰️ Updates
 
+[2023/11/14] MiniChat-3B achieves a win rate of 76.94 on [AlpacaEval Leaderboard](https://tatsu-lab.github.io/alpaca_eval/), surpassing Vicuna-7B v1.3 and leaving large room to improve.
+
+<img src="./assets/alpacaeval.jpg" alt="alpacaeval" width="200" />
+
 [2023/11/15] Wait, what!? MiniMA2 is on the way! Just stay tuned ; ) The release is scheduled at the begining of year 2024 and hopefully it could be timely.
 
 [2023/11/14] For models <= 3B on [Open LLM Leaderboard](https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard), MiniMA surpasses ShearedLLaMA-2.7B and ranks #14, and MiniChat (potentially with unidentified data contamination) surpasses Phi1.5 and ranks #2.
@@ -99,9 +103,11 @@ Detailed tutorials can be found [here](./TUTORIAL.md).
 ## 🔮 Future Work
 
 - A more diverse blend of data sources, e.g., Chinese wikipedia, books, etc.
-- Smaller models, e.g., 1.2B model, say MicroMA.
 - Combined with preference optimization, e.g., DPO to MiniChat.
+- Smaller models, e.g., 1.2B model, say NanoMA.
 - Designed for speculative sampling, e.g., MiniMA to LLaMA for inference efficiency.
+- Integrated with vision, e.g., MiniChat-V.
+- Compatible with long context, e.g., MiniChat-L.
 
 ## 🤔️ Bugs or Questions?
 
