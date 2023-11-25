@@ -26,7 +26,7 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 
 [2023/11/26] We have found a mistake in our previous submission to AlpacaEval Leaderboard. And now the mistake has been fixed. MiniChat-3B can surpass ChatGLM2 but not Davinci-003. A long way to go now. However, you could still expect our MiniChat2 : ) Keep going!
 
-[2023/11/16] MiniChat-3B achieves a win rate of 76.94 on [AlpacaEval Leaderboard](https://tatsu-lab.github.io/alpaca_eval/), surpassing Vicuna-7B v1.3 and leaving large room to improve.
+[2023/11/16] MiniChat-3B achieves a win rate of ~~76.94~~ 48.82 on [AlpacaEval Leaderboard](https://tatsu-lab.github.io/alpaca_eval/), ~~surpassing Vicuna-7B v1.3 and~~ leaving large room for improvement.
 
 <img src="./assets/alpacaeval.jpg" alt="alpacaeval" width="200" />
 
