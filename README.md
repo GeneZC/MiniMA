@@ -5,7 +5,7 @@
 Logo for MiniMA designed with DALL·E
 </p>
 
-📑 [arXiv](https://arxiv.org/abs/2311.07052) | 👻 [GitHub](https://github.com/GeneZC/MiniMA) | 🤗 [HuggingFace-MiniMA](https://huggingface.co/GeneZC/MiniMA-3B) | 🤗 [HuggingFace-MiniChat](https://huggingface.co/GeneZC/MiniChat-3B) | 🤖 [ModelScope-MiniMA](https://modelscope.cn/models/GeneZC/MiniMA-3B) | 🤖 [ModelScope-MiniChat](https://modelscope.cn/models/GeneZC/MiniChat-3B)
+📑 [arXiv](https://arxiv.org/abs/2311.07052) | 👻 [GitHub](https://github.com/GeneZC/MiniMA) | 🤗 [HuggingFace-MiniMA](https://huggingface.co/GeneZC/MiniMA-3B) | 🤗 [HuggingFace-MiniChat](https://huggingface.co/GeneZC/MiniChat-3B) | 🤗 [HuggingFace-MiniChat-1.5](https://huggingface.co/GeneZC/MiniChat-1.5-3B) | 🤖 [ModelScope-MiniMA](https://modelscope.cn/models/GeneZC/MiniMA-3B) | 🤖 [ModelScope-MiniChat](https://modelscope.cn/models/GeneZC/MiniChat-3B)
 
 Language model (LM) distillation is a trending area that aims to distil the knowledge resided in a large teacher LM to a small student one. While various methods have been proposed to push the distillation to its limits, it is still a pain distilling LMs when a large capacity gap is exhibited between the teacher and the student LMs. The pain is mainly resulted by the curse of capacity gap, which describes that a larger teacher LM cannot always lead to a better student LM than one distilled from a smaller teacher LM due to the affect of capacity gap increment. That is, there is likely an optimal point yielding the best student LM along the scaling course of the teacher LM. Even worse, the curse of capacity gap can be only partly yet not fully lifted as indicated in previous studies.
 
@@ -24,7 +24,7 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 
 ## 🕰️ Updates
 
-[2023/11/26] We have found a mistake in our previous submission to AlpacaEval Leaderboard. And now the mistake has been [fixed](https://github.com/tatsu-lab/alpaca_eval/pull/173). MiniChat-3B can surpass ChatGLM2 but not Davinci-003. A long way to go now. However, you could still expect our MiniChat2 : ) Keep going!
+[2023/11/27] MiniChat1.5-3B achieves a win rate of 78.55 : ) Keep going! However, we have found a mistake in our previous submission to AlpacaEval Leaderboard. And the mistake should have been [fixed](https://github.com/tatsu-lab/alpaca_eval/pull/176). MiniChat-3B achieves a win rate of 48.82 and can surpass ChatGLM2 but not Davinci-003.
 
 [2023/11/16] MiniChat-3B achieves a win rate of ~~76.94~~ 48.82 on [AlpacaEval Leaderboard](https://tatsu-lab.github.io/alpaca_eval/), ~~surpassing Vicuna-7B v1.3 and~~ leaving large room for improvement.
 
