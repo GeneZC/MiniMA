@@ -24,7 +24,7 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 
 ## 🕰️ Updates
 
-[2023/11/27] MiniChat1.5-3B achieves a win rate of 78.55 : ) Keep going! However, we have found a mistake in our previous submission to AlpacaEval Leaderboard. And the mistake should have been [fixed](https://github.com/tatsu-lab/alpaca_eval/pull/176). MiniChat-3B achieves a win rate of 48.82 and can surpass ChatGLM2 but not Davinci-003.
+[2023/11/27] MiniChat1.5-3B (enhanced with NEFTune and DPO) achieves a win rate of 78.55 : ) Keep going! However, we have found a mistake in our MiniChat-3B submission to AlpacaEval Leaderboard. And the mistake should have been [fixed](https://github.com/tatsu-lab/alpaca_eval/pull/176). MiniChat-3B instead achieves a win rate of 48.82 and can surpass ChatGLM2 but not Davinci-003.
 
 [2023/11/16] MiniChat-3B achieves a win rate of ~~76.94~~ 48.82 on [AlpacaEval Leaderboard](https://tatsu-lab.github.io/alpaca_eval/), ~~surpassing Vicuna-7B v1.3 and~~ leaving large room for improvement.
 
@@ -108,6 +108,7 @@ Detailed tutorials can be found [here](./TUTORIAL.md).
 - Combined with preference optimization, e.g., DPO to MiniChat.
 - Smaller models, e.g., 1.2B model, say NanoMA.
 - Designed for speculative sampling, e.g., MiniMA to LLaMA for inference efficiency.
+- Designed with infinite inference length, e.g., attention sinks.
 - Integrated with vision, e.g., MiniChat-V.
 - Compatible with long context, e.g., MiniChat-L.
 
