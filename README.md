@@ -24,17 +24,15 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 
 ## 🕰️ Updates
 
+<img src="./assets/openllm.png" alt="openllm" width="550" /> <img src="./assets/alpacaeval.png" alt="alpacaeval" width="220" />
+
 [2023/11/27] MiniChat1.5-3B (enhanced with NEFTune and DPO) achieves a win rate of 78.55 : ) Keep going! However, we have found a mistake in our MiniChat-3B submission to AlpacaEval Leaderboard. And the mistake should have been [fixed](https://github.com/tatsu-lab/alpaca_eval/pull/176). MiniChat-3B instead achieves a win rate of 48.82 and can surpass ChatGLM2 but not Davinci-003.
 
 [2023/11/16] MiniChat-3B achieves a win rate of ~~76.94~~ 48.82 on [AlpacaEval Leaderboard](https://tatsu-lab.github.io/alpaca_eval/), ~~surpassing Vicuna-7B v1.3 and~~ leaving large room for improvement.
 
-<img src="./assets/alpacaeval.jpg" alt="alpacaeval" width="200" />
-
 [2023/11/15] Wait, what!? MiniMA2 is on the way! Just stay tuned ; ) The release is scheduled at the begining of year 2024 and hopefully it could be timely.
 
 [2023/11/14] For models <= 3B on [Open LLM Leaderboard](https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard), MiniMA surpasses ShearedLLaMA-2.7B and ranks #14, and MiniChat (potentially with unidentified data contamination) surpasses Phi1.5 and ranks #2.
-
-<img src="./assets/llmboard.png" alt="llmboard" width="700" />
 
 [2023/11/14] We have released the paper, uploaded the checkpoints, and updated the codebase.
 
