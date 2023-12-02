@@ -109,7 +109,9 @@ def main():
     model = model_class.from_pretrained(
         args.teacher_model_name_or_path,
         config=config,
+        torch_dtype=torch.float16,
     )
+    model = model.half()
     model = model.to(device)
 
     dev_dataset = TFRecordDataset(data_reader, shuffle=False)
@@ -121,13 +123,13 @@ def main():
     num_layers, num_heads, num_neurons, num_hiddens = \
         config.num_hidden_layers, config.num_attention_heads, config.intermediate_size, config.hidden_size
     head_importance = torch.zeros(num_layers, num_heads).to(device)
-    head_mask = torch.ones(num_layers, num_heads).to(device)
+    head_mask = torch.ones(num_layers, num_heads, dtype=torch.float16).to(device)
     head_mask.requires_grad_(True)
     neuron_importance = torch.zeros(num_layers, num_neurons).to(device)
-    neuron_mask = torch.ones(num_layers, num_neurons).to(device)
+    neuron_mask = torch.ones(num_layers, num_neurons, dtype=torch.float16).to(device)
     neuron_mask.requires_grad_(True)
     hidden_importance = torch.zeros(num_hiddens).to(device) # For all
-    hidden_mask = torch.ones(num_hiddens).to(device)
+    hidden_mask = torch.ones(num_hiddens, dtype=torch.float16).to(device)
     hidden_mask.requires_grad_(True)
 
     input_map = {"text_indices": "input_ids", "text_mask": "attention_mask", "labels": "labels", "label_mask": "label_mask", "lm_labels": "labels"}
@@ -197,7 +199,7 @@ def main():
         if sqrt_sparsity > 90:
             head_size = config.d_kv if "t5" in args.model_type else int(config.hidden_size / num_heads)
             heads_sparsified = head_sort[:round(90. / 100 * num_total_heads)]
-            additional_num_neurons = round((float(sqrt_sparsity) - 90.) / 100 * num_total_heads * head_size * 2)
+            additional_num_neurons = round((float(sqrt_sparsity) - 90.) / 100 * num_total_heads * head_size * 4 / 3)
             neurons_sparsified = neuron_sort[:round(float(sqrt_sparsity) / 100 * num_total_neurons) + additional_num_neurons]
         else:
             heads_sparsified = head_sort[:round(float(sqrt_sparsity) / 100 * num_total_heads)]

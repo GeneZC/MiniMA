@@ -7,7 +7,7 @@ from torch import nn
 
 from transformers.models.llama.modeling_llama import repeat_kv
 
-from modules.fused_rope_monkey_patch_llama import apply_rotary_pos_emb
+from transformers.models.llama.modeling_llama import apply_rotary_pos_emb
 
 from einops import rearrange
 
