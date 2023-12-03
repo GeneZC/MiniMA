@@ -95,7 +95,19 @@ Now you get `llama2-7b-ada`.
 
 **Pruning**
 
-The pruning is executed with 1 Nvidia A100 GPU and only a small portion of adaptation data.
+The pruning is executed with 1 Nvidia A100 GPU and only a small portion of adaptation data, and pruning data should be builded to 512 for pruning efficiency.
+
+The following is an example script (i.e., `scripts/build_pruning_data.sh`) to build pruning data (e.g., part of WuDao):
+```bash
+python run_building_data_llama.py \
+    --input_dir "dir/to/part-of-wudao" \
+    --input_regex "*.jsonl" \
+    --output_dir dir/to/builded/part-of-wudao \
+    --tokenizer_name_or_path path/to/llama2-7b-ada-init \
+    --do_lower_case \
+    --max_seq_length 512 \
+    --num_processors 32
+```
 
 The following is an example script (i.e., `scripts/prune_llama.sh`) to prune `llama2-7b-ada`:
 
@@ -103,7 +115,7 @@ The following is an example script (i.e., `scripts/prune_llama.sh`) to prune `ll
 python run_sparsification_llama.py \
     --model_type sparsellama_lm \
     --teacher_model_name_or_path path/to/llama2-7b-ada \
-    --record_path_or_regex "dir/to/builded/wudao/*.tfrecord" \
+    --record_path_or_regex "dir/to/builded/part-of-wudao/*.tfrecord" \
     --data_type llama_lm \
     --output_dir dir/to/outputs \
     --max_length 512 \
@@ -119,8 +131,6 @@ The following is an example script (i.e., `scripts/convert_llama.sh`) to obtain 
 python run_converting_llama.py
     --sparsellama_dir sparsellama2-7b-ada
 ```
-
-
 
 **Data**
 
