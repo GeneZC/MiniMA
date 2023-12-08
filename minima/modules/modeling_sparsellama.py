@@ -79,8 +79,9 @@ class SparseLlamaRMSNorm(nn.Module):
         self.variance_epsilon = eps
         self.normalized_shape_origin = (hidden_size,)
         self.normalized_shape_sparsified = (hidden_size,)
-        self.sparsify(sparsified_elements)
-        self.densify()
+        if sparsified_elements:
+            self.sparsify(sparsified_elements)
+            self.densify()
 
     def forward(self, hidden_states, hidden_mask=None):
         weight = self.weight[:self.normalized_shape_sparsified[0]]
@@ -182,8 +183,9 @@ class SparseEmbedding(nn.Embedding):
         super().__init__(num_embeddings, embedding_dim, padding_idx=padding_idx)
         self.embedding_dim_origin = embedding_dim
         self.embedding_dim_sparsified = embedding_dim
-        self.sparsify(sparsified_elements)
-        self.densify()
+        if sparsified_elements:
+            self.sparsify(sparsified_elements)
+            self.densify()
 
     def forward(self, input):
         weight = self.weight[:, :self.embedding_dim_sparsified]
@@ -222,9 +224,10 @@ class SparseLinear(nn.Linear):
         self.out_features_sparsified = out_features
         self.element_size = element_size
         self.dim = dim
-        self.sparsify(sparsified_elements[0])
-        self.sparsify(sparsified_elements[1], for_hidden=True)
-        self.densify()
+        if sparsified_elements[0] or sparsified_elements[1]:
+            self.sparsify(sparsified_elements[0])
+            self.sparsify(sparsified_elements[1], for_hidden=True)
+            self.densify()
 
     def forward(self, input):
         weight = self.weight[:self.out_features_sparsified, :self.in_features_sparsified]
@@ -314,6 +317,18 @@ class SparseLlamaMLP(nn.Module):
             return self.down_proj(self.act_fn(self.gate_proj(x)) * self.up_proj(x))
 
 
+def repeat_kv(hidden_states: torch.Tensor, n_rep: int) -> torch.Tensor:
+    """
+    This is the equivalent of torch.repeat_interleave(x, dim=1, repeats=n_rep). The hidden states go from (batch,
+    num_key_value_heads, seqlen, head_dim) to (batch, num_attention_heads, seqlen, head_dim)
+    """
+    batch, num_key_value_heads, slen, head_dim = hidden_states.shape
+    if n_rep == 1:
+        return hidden_states
+    hidden_states = hidden_states[:, :, None, :, :].expand(batch, num_key_value_heads, n_rep, slen, head_dim)
+    return hidden_states.reshape(batch, num_key_value_heads * n_rep, slen, head_dim)
+
+
 class SparseLlamaAttention(nn.Module):
     """Multi-headed attention from 'Attention Is All You Need' paper"""
 
@@ -323,7 +338,10 @@ class SparseLlamaAttention(nn.Module):
         self.hidden_size = config.hidden_size
         self.num_heads = config.num_attention_heads
         self.head_dim = self.hidden_size // self.num_heads
+        self.num_key_value_heads = getattr(config, "num_key_value_heads", config.num_attention_heads)
+        self.num_key_value_groups = self.num_heads // self.num_key_value_heads
         self.max_position_embeddings = config.max_position_embeddings
+        self.rope_theta = getattr(config, "rope_theta", 10000)
 
         if (self.head_dim * self.num_heads) != self.hidden_size:
             raise ValueError(
@@ -331,13 +349,13 @@ class SparseLlamaAttention(nn.Module):
                 f" and `num_heads`: {self.num_heads})."
             )
         self.hidden_size_sparsified = self.hidden_size
-        self.num_heads_sparsified = self.num_heads
+        self.num_heads_sparsified = self.num_key_value_heads
 
-        self.q_proj = SparseLinear(self.hidden_size, self.num_heads * self.head_dim, bias=False, element_size=self.head_dim, dim=1, sparsified_elements=(sparsified_heads, sparsified_hiddens))
-        self.k_proj = SparseLinear(self.hidden_size, self.num_heads * self.head_dim, bias=False, element_size=self.head_dim, dim=1, sparsified_elements=(sparsified_heads, sparsified_hiddens))
-        self.v_proj = SparseLinear(self.hidden_size, self.num_heads * self.head_dim, bias=False, element_size=self.head_dim, dim=1, sparsified_elements=(sparsified_heads, sparsified_hiddens))
-        self.o_proj = SparseLinear(self.num_heads * self.head_dim, self.hidden_size, bias=False, element_size=self.head_dim, dim=0, sparsified_elements=(sparsified_heads, sparsified_hiddens))
-        self.rotary_emb = SparseLlamaRotaryEmbedding(self.head_dim, max_position_embeddings=self.max_position_embeddings)
+        self.q_proj = SparseLinear(self.hidden_size, self.num_heads * self.head_dim, bias=False, element_size=self.num_key_value_groups * self.head_dim, dim=1, sparsified_elements=(sparsified_heads, sparsified_hiddens))
+        self.k_proj = SparseLinear(self.hidden_size, self.num_key_value_heads * self.head_dim, bias=False, element_size=self.head_dim, dim=1, sparsified_elements=(sparsified_heads, sparsified_hiddens))
+        self.v_proj = SparseLinear(self.hidden_size, self.num_key_value_heads * self.head_dim, bias=False, element_size=self.head_dim, dim=1, sparsified_elements=(sparsified_heads, sparsified_hiddens))
+        self.o_proj = SparseLinear(self.num_heads * self.head_dim, self.hidden_size, bias=False, element_size=self.num_key_value_groups * self.head_dim, dim=0, sparsified_elements=(sparsified_heads, sparsified_hiddens))
+        self.rotary_emb = SparseLlamaRotaryEmbedding(self.head_dim, max_position_embeddings=self.max_position_embeddings, base=self.rope_theta)
 
     def _shape(self, tensor: torch.Tensor, seq_len: int, bsz: int):
         return tensor.view(bsz, seq_len, self.num_heads_sparsified, self.head_dim).transpose(1, 2).contiguous()
@@ -353,11 +371,11 @@ class SparseLlamaAttention(nn.Module):
         use_cache: bool = False,
     ) -> Tuple[torch.Tensor, Optional[torch.Tensor], Optional[Tuple[torch.Tensor]]]:
         self.hidden_size_sparsified = self.o_proj.in_features_sparsified
-        self.num_heads_sparsified = int(self.hidden_size_sparsified / self.head_dim)
+        self.num_heads_sparsified = int(self.hidden_size_sparsified / self.head_dim / self.num_key_value_groups)
 
         bsz, q_len, _ = hidden_states.size()
 
-        query_states = self.q_proj(hidden_states).view(bsz, q_len, self.num_heads_sparsified, self.head_dim).transpose(1, 2)
+        query_states = self.q_proj(hidden_states).view(bsz, q_len, self.num_key_value_groups * self.num_heads_sparsified, self.head_dim).transpose(1, 2)
         key_states = self.k_proj(hidden_states).view(bsz, q_len, self.num_heads_sparsified, self.head_dim).transpose(1, 2)
         value_states = self.v_proj(hidden_states).view(bsz, q_len, self.num_heads_sparsified, self.head_dim).transpose(1, 2)
 
@@ -375,11 +393,15 @@ class SparseLlamaAttention(nn.Module):
 
         past_key_value = (key_states, value_states) if use_cache else None
 
+        # Repeat k/v heads if n_kv_heads < n_heads.
+        key_states = repeat_kv(key_states, self.num_key_value_groups)
+        value_states = repeat_kv(value_states, self.num_key_value_groups)
+
         attn_weights = torch.matmul(query_states, key_states.transpose(2, 3)) / math.sqrt(self.head_dim)
 
-        if attn_weights.size() != (bsz, self.num_heads_sparsified, q_len, kv_seq_len):
+        if attn_weights.size() != (bsz, self.num_key_value_groups * self.num_heads_sparsified, q_len, kv_seq_len):
             raise ValueError(
-                f"Attention weights should be of size {(bsz, self.num_heads_sparsified, q_len, kv_seq_len)}, but is"
+                f"Attention weights should be of size {(bsz, self.num_key_value_groups * self.num_heads_sparsified, q_len, kv_seq_len)}, but is"
                 f" {attn_weights.size()}"
             )
 
@@ -394,12 +416,13 @@ class SparseLlamaAttention(nn.Module):
         # upcast attention to fp32
         attn_weights = nn.functional.softmax(attn_weights, dim=-1, dtype=torch.float32).to(query_states.dtype)
         if head_mask is not None:
+            head_mask = repeat_kv(head_mask, self.num_key_value_groups)
             attn_weights = attn_weights * head_mask
         attn_output = torch.matmul(attn_weights, value_states)
 
-        if attn_output.size() != (bsz, self.num_heads_sparsified, q_len, self.head_dim):
+        if attn_output.size() != (bsz, self.num_key_value_groups * self.num_heads_sparsified, q_len, self.head_dim):
             raise ValueError(
-                f"`attn_output` should be of size {(bsz, self.num_heads_sparsified, q_len, self.head_dim)}, but is"
+                f"`attn_output` should be of size {(bsz, self.num_key_value_groups * self.num_heads_sparsified, q_len, self.head_dim)}, but is"
                 f" {attn_output.size()}"
             )
 
@@ -723,12 +746,13 @@ class SparseLlamaModel(LlamaPreTrainedModel):
 
     def reorder(self, head_indices, neuron_indices, hidden_indices):
         for layer_idx, indices in head_indices.items():
-            n, h = self.layers[layer_idx].self_attn.num_heads, self.layers[layer_idx].self_attn.head_dim
-            indices = torch.arange(n * h).reshape(n, h)[indices.cpu()].reshape(-1).contiguous().long()
-            self.layers[layer_idx].self_attn.q_proj.reorder(indices)
-            self.layers[layer_idx].self_attn.k_proj.reorder(indices)
-            self.layers[layer_idx].self_attn.v_proj.reorder(indices)
-            self.layers[layer_idx].self_attn.o_proj.reorder(indices)
+            n, g, h = self.layers[layer_idx].self_attn.num_key_value_heads, self.layers[layer_idx].self_attn.num_key_value_groups, self.layers[layer_idx].self_attn.head_dim
+            qo_indices = torch.arange(n * g * h).reshape(n, g * h)[indices.cpu()].reshape(-1).contiguous().long()
+            kv_indices = torch.arange(n * h).reshape(n, h)[indices.cpu()].reshape(-1).contiguous().long()
+            self.layers[layer_idx].self_attn.q_proj.reorder(qo_indices)
+            self.layers[layer_idx].self_attn.k_proj.reorder(kv_indices)
+            self.layers[layer_idx].self_attn.v_proj.reorder(kv_indices)
+            self.layers[layer_idx].self_attn.o_proj.reorder(qo_indices)
         for layer_idx, indices in neuron_indices.items():
             self.layers[layer_idx].mlp.up_proj.reorder(indices)
             self.layers[layer_idx].mlp.gate_proj.reorder(indices)

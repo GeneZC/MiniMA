@@ -95,7 +95,7 @@ Now you get `llama2-7b-ada`.
 
 **Pruning**
 
-The pruning is executed with 1 Nvidia A100 GPU and only a small portion of adaptation data, and pruning data should be builded to 512 for pruning efficiency.
+The pruning is executed with 8 Nvidia A100 GPUs and only a small portion of adaptation data, and pruning data should be builded to 512 for pruning efficiency.
 
 The following is an example script (i.e., `scripts/build_pruning_data.sh`) to build pruning data (e.g., part of WuDao):
 ```bash
@@ -112,14 +112,17 @@ python run_building_data_llama.py \
 The following is an example script (i.e., `scripts/prune_llama.sh`) to prune `llama2-7b-ada`:
 
 ```bash
-python run_sparsification_llama.py \
+CUDA_LAUNCH_BLOCKING=1 torchrun --nproc_per_node=$GPU_NUM --nnodes=$NODE_WORLD_SIZE --node_rank=$NODE_RANK --master_addr=$MASTER_ADDR --master_port=$MASTER_PORT run_sparsification_llama.py \
     --model_type sparsellama_lm \
     --teacher_model_name_or_path path/to/llama2-7b-ada \
     --record_path_or_regex "dir/to/builded/part-of-wudao/*.tfrecord" \
     --data_type llama_lm \
     --output_dir dir/to/outputs \
     --max_length 512 \
-    --per_device_eval_batch_size 2 \
+    --per_device_eval_batch_size 8 \
+    --use_act_ckpt \
+    --use_bf16 \
+    --deepspeed ds_config.json \
     --model_suffix 7b
 ```
 

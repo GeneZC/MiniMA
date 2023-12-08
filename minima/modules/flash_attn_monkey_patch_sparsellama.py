@@ -3,6 +3,8 @@ from typing import List, Optional, Tuple
 import torch
 from torch import nn
 
+from transformers.models.llama.modeling_llama import repeat_kv
+
 from transformers.models.llama.modeling_llama import apply_rotary_pos_emb
 
 from einops import rearrange
@@ -27,11 +29,11 @@ def forward(
     attention_mask: [bsz, q_len]
     """
     self.hidden_size_sparsified = self.o_proj.in_features_sparsified
-    self.num_heads_sparsified = int(self.hidden_size_sparsified / self.head_dim)
+    self.num_heads_sparsified = int(self.hidden_size_sparsified / self.head_dim / self.num_key_value_groups)
 
     bsz, q_len, _ = hidden_states.size()
 
-    query_states = self.q_proj(hidden_states).view(bsz, q_len, self.num_heads_sparsified, self.head_dim).transpose(1, 2)
+    query_states = self.q_proj(hidden_states).view(bsz, q_len, self.num_key_value_groups * self.num_heads_sparsified, self.head_dim).transpose(1, 2)
     key_states = self.k_proj(hidden_states).view(bsz, q_len, self.num_heads_sparsified, self.head_dim).transpose(1, 2)
     value_states = self.v_proj(hidden_states).view(bsz, q_len, self.num_heads_sparsified, self.head_dim).transpose(1, 2)
     # [bsz, q_len, nh, hd]
@@ -45,6 +47,10 @@ def forward(
     # [bsz, nh, t, hd]
     assert not output_attentions, "output_attentions is not supported"
     assert not use_cache, "use_cache is not supported"
+
+    # Repeat k/v heads if n_kv_heads < n_heads.
+    key_states = repeat_kv(key_states, self.num_key_value_groups)
+    value_states = repeat_kv(value_states, self.num_key_value_groups)
 
     # Flash attention codes from
     # https://github.com/HazyResearch/flash-attention/blob/main/flash_attn/flash_attention.py
@@ -79,6 +85,9 @@ def forward(
         output = rearrange(pad_input(rearrange(output_unpad, 'nnz h d -> nnz (h d)'),
                                     indices, bsz, q_len),
                         'b s (h d) -> b s h d', h=nheads)
+    if head_mask is not None:
+        head_mask = repeat_kv(head_mask, self.num_key_value_groups)
+        output = output * head_mask.transpose(1, 2)
     return self.o_proj(rearrange(output,
                                     'b s h d -> b s (h d)')), None, None
 
