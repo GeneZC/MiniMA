@@ -16,7 +16,7 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 ## 🔗 Quick Links
 
 - [Updates](#%EF%B8%8F-updates)
-- [Performance](-performance)
+- [Performance](#-performance)
 - [Quick Start](#-quick-start)
 - [Tutorials](#-tutorials)
 - [Future Work](#-future-work)
