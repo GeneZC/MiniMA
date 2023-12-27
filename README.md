@@ -140,10 +140,10 @@ Detailed tutorials can be found [here](./TUTORIAL.md).
 
 - [x] Combined with preference optimization, e.g., DPO to MiniChat.
 - [x] A more diverse blend of data sources, e.g., Chinese wikipedia, books, etc.
-- [] MoE models, e.g. MiniMA-MoE.
-- [] Designed for speculative sampling, e.g., MiniMA to LLaMA for inference efficiency.
-- [] Designed with infinite inference length, e.g., attention sinks.
-- [] Integrated with vision, e.g., MiniChat-V.
+- [ ] MoE models, e.g. MiniMA-MoE.
+- [ ] Designed for speculative sampling, e.g., MiniMA to LLaMA for inference efficiency.
+- [ ] Designed with infinite inference length, e.g., attention sinks.
+- [ ] Integrated with vision, e.g., MiniChat-V.
 
 ## 🤔️ Bugs or Questions?
 
