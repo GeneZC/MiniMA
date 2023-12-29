@@ -16,6 +16,7 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 ## 🔗 Quick Links
 
 - [Updates](#%EF%B8%8F-updates)
+- [Live](#-live)
 - [Performance](#-performance)
 - [Quick Start](#-quick-start)
 - [Tutorials](#-tutorials)
@@ -24,6 +25,8 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 - [Citation](#-citation)
 
 ## 🕰️ Updates
+
+[2023/12/29] MiniMA-MoE is kicked off, aiming at upcycling MiniMA-2-3B to an MoE model. Following the [Pyramid-MoE](https://www.microsoft.com/en-us/research/blog/deepspeed-advancing-moe-inference-and-training-to-power-next-generation-ai-scale/) design, MiniMA-MoE has the bottom 25% MLPs with 2 experts while the top 75% MLPs with 4 experts, reaching ~7B parameters in total. Top-1 gating is used to preserve 3B activated parameters per token. The progress would be updated in a biweekly schedule (totally 6 biweeks as estimated) and could be tracked in [Live](#-live).
 
 [2023/12/27] Performance results are added for potential references in [Performance](#-performance). Still room for improvement, bravo!
 
@@ -38,6 +41,21 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 [2023/11/14] For models <= 3B on [Open LLM Leaderboard](https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard), MiniMA-3B surpasses ShearedLLaMA-2.7B and ranks #14, and MiniChat-3B (potentially with unidentified data contamination) surpasses Phi1.5 and ranks #2.
 
 [2023/11/14] We have released the paper, uploaded the checkpoints, and updated the codebase.
+
+## 📺 Live
+
+> MiniMA-MoE-4x3B
+
+**Training Losses**
+
+<img src="./assets/live_loss.jpg" alt="live_loss" width="600"/>
+
+**Evaluation Metrics**
+
+||TFLOPs|MMLU (5-shot)|CEval (5-shot)|DROP (3-shot)|HumanEval (0-shot)|BBH (3-shot)|GSM8K (8-shot)|
+|--|--|--|--|--|--|--|--|
+|MiniMA-2-3B|13.4E9|40.14|44.65|23.10|14.63|31.43|8.87|
+|MiniMA-MoE-4x3B-Kickoff|+0.3E9|33.71|33.66|20.80|9.76|29.35|6.07|
 
 ## 📊 Performance
 
