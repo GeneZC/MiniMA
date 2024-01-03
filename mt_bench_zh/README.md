@@ -1,6 +1,8 @@
 
 # 💬 MT-Bench-ZH
 
+👻 [GitHub](https://github.com/GeneZC/MiniMA/tree/main/mt_bench_zh) | 🤗 [HuggingFace-MiniMA](https://huggingface.co/datasets/GeneZC/MT-Bench-ZH)
+
 ## 🎯 Motivation
 
 MiniChat-1/1.5/2-3B are all instruction-following language models that could handle Chinese instructions, however, there is currently no instruciton-following benchamrk specialized for Chinese. Due to this, our previous evaluation has been limited to English-only benchmarks (i.e., AlpacaEval and MT-Bench). 
