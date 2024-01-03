@@ -1,7 +1,7 @@
 
 # 💬 MT-Bench-ZH
 
-👻 [GitHub](https://github.com/GeneZC/MiniMA/tree/main/mt_bench_zh) | 🤗 [HuggingFace-MiniMA](https://huggingface.co/datasets/GeneZC/MT-Bench-ZH)
+👻 [GitHub](https://github.com/GeneZC/MiniMA/tree/main/mt_bench_zh) | 🤗 [HuggingFace-MT-Bench-ZH](https://huggingface.co/datasets/GeneZC/MT-Bench-ZH)
 
 ## 🎯 Motivation
 
