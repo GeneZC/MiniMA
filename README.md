@@ -11,7 +11,13 @@ Language model (LM) distillation is a trending area that aims to distil the know
 
 However, the tale is not ever one-sided. Although a larger teacher LM has better performance than a smaller teacher LM, it is much more resource-demanding especially in the context of recent large LMs (LLMs). Consequently, instead of sticking to lifting the curse, leaving the curse as is should be arguably fine. Even better, in this paper, we reveal that the optimal capacity gap is almost consistent across different student scales and architectures, fortunately turning the curse into the law of capacity gap. The law later guides us to distil a 3B student LM (termed MiniMA) from a 7B teacher LM (adapted LLaMA2-7B). MiniMA is demonstrated to yield a new compute-performance pareto frontier among existing 3B LMs on commonly used benchmarks, and its instruction-tuned version (termed MiniChat) outperforms a wide range of 3B competitors in GPT4 evaluation and could even compete with several 7B chat models. 
 
-<img src="./assets/teaser_a.jpg" alt="teaser_a" width="400" /> <img src="./assets/teaser_b.jpg" alt="teaser_b" width="355"/>
+<p align="center">
+<img src="./assets/teaser_a.jpg" alt="teaser_a" width="400" /> 
+</p>
+
+<p align="center">
+<img src="./assets/teaser_b.jpg" alt="teaser_b" width="355"/> <img src="./assets/teaser_c.jpg" alt="teaser_c" width="368"/>
+</p>
 
 ## 🔗 Quick Links
 
@@ -25,6 +31,8 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 - [Citation](#-citation)
 
 ## 🕰️ Updates
+
+[2024/1/3] [MT-Bench-ZH](./mt_bench_zh) is released to serve as a Chinese counterpart of multi-turn instruction-following evaluaion (e.g., MT-Bench). MT-Bench-ZH is essentially translated from MT-Bench by GPT-4 and further checked by human. On the MT-Bench-ZH, MiniChat-2-3B surpasses Qwen-Chat-1.8B and approximates Qwen-Chat-7B. And it indicates MiniChat-2-3B has a better bilingual ability than others (e.g., Phi-2, StableLM-Zephyr-3B, etc.).
 
 [2023/12/29] MiniMA-MoE is kicked off, aiming at upcycling MiniMA-2-3B to an MoE model. Following the [Pyramid-MoE](https://www.microsoft.com/en-us/research/blog/deepspeed-advancing-moe-inference-and-training-to-power-next-generation-ai-scale/) design, MiniMA-MoE has the bottom 25% MLPs with 2 experts while the top 75% MLPs with 4 experts, reaching ~7B parameters in total. Top-1 gating is used to preserve 3B activated parameters per token. The progress would be updated in a biweekly schedule (totally 6 biweeks as estimated) and could be tracked in [Live](#-live).
 
@@ -78,17 +86,24 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 
 **Instruction-following Benchmarks**
 
-|Method|AlpacaEval|MT-Bench|
-|--|--|--|
-|GPT-4|95.28|9.18|
-|Zephyr-7B-Beta|90.60|7.34|
-|Phi-2-DPO|81.37|-|
-|StableLM Zephyr 3B|76.00|6.64|
-|Vicuna-7B|76.84|6.17|
-|LLaMA-2-Chat-7B|71.37|6.27|
+|Method|AlpacaEval|MT-Bench|MT-Bench-ZH|
+|--|--|--|--|
+|GPT-4|95.28|9.18|8.96|
+|Zephyr-7B-Beta|90.60|7.34|6.27<sup>#</sup>|
+|Vicuna-7B|76.84|6.17|5.22<sup>#</sup>|
+|LLaMA-2-Chat-7B|71.37|6.27|5.43<sup>#</sup>|
+|Qwen-Chat-7B|-|-|6.24|
+|Phi-2-DPO|81.37|-|1.59<sup>#</sup><sup>$</sup>|
+|StableLM-Zephyr-3B|76.00|6.64|4.31<sup>#</sup>|
+|Rocket-3B|79.75|6.56|4.07<sup>#</sup>|
+|Qwen-Chat-1.8B|-|-|5.65|
 ||
-|MiniChat-3B|48.82|-|
-|MiniChat-2-3B|77.30|6.23|
+|MiniChat-3B|48.82|-|-|
+|MiniChat-2-3B|77.30|6.23|6.04|
+
+<sup>#</sup> specialized mainly for English.
+
+<sup>$</sup> finetuned without multi-turn instruction data.
 
 ## ✨ Quick Start
 
