@@ -62,6 +62,9 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 
 ||TFLOPs|MMLU (5-shot)|CEval (5-shot)|DROP (3-shot)|HumanEval (0-shot)|BBH (3-shot)|GSM8K (8-shot)|
 |--|--|--|--|--|--|--|--|
+|LLaMA-MoE-v1-3.5B-4_16|84.0+4.2E9|26.69|24.67|23.40|6.10|30.26|5.38|
+|DeepSeek-MoE-16B-base|33.6E|44.64|39.90|29.74|26.83|31.95|17.06|
+|Phixtral-2x2.8B|159.9E9|53.91|32.24|32.28|47.56|44.29|58.53|
 |MiniMA-2-3B|13.4E9|40.14|44.65|23.10|14.63|31.43|8.87|
 |MiniMA-MoE-2/4x3B-Kickoff|+0.3E9|33.71|33.66|20.80|9.76|29.35|6.07|
 |MiniMA-MoE-2/4x3B-Biweek1|+1.6E9|32.17|35.59|20.48|9.15|30.10|5.91|
