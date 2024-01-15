@@ -34,7 +34,7 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 
 [2024/1/3] [MT-Bench-ZH](./mt_bench_zh) is released to serve as a Chinese counterpart of multi-turn instruction-following evaluaion (e.g., MT-Bench). MT-Bench-ZH is essentially translated from MT-Bench by GPT-4 and further checked by human. On the MT-Bench-ZH, MiniChat-2-3B surpasses Qwen-Chat-1.8B and approximates Qwen-Chat-7B. And it indicates MiniChat-2-3B has a better bilingual ability than others (e.g., Phi-2, StableLM-Zephyr-3B, etc.).
 
-[2023/12/29] MiniMA-MoE is kicked off, aiming at upcycling MiniMA-2-3B to an MoE model. Following the [Pyramid-MoE](https://www.microsoft.com/en-us/research/blog/deepspeed-advancing-moe-inference-and-training-to-power-next-generation-ai-scale/) design, MiniMA-MoE has the bottom 25% MLPs with 2 experts while the top 75% MLPs with 4 experts, reaching ~7B parameters in total. Top-1 gating is used to preserve 3B activated parameters per token. The progress would be updated in a biweekly schedule (totally 6 biweeks as estimated) and could be tracked in [Live](#-live).
+[2023/12/29] MiniMA-MoE is kicked off, aiming at upcycling MiniMA-2-3B to an MoE model. Following the [Pyramid-MoE](https://www.microsoft.com/en-us/research/blog/deepspeed-advancing-moe-inference-and-training-to-power-next-generation-ai-scale/) design, MiniMA-MoE has the bottom 25% MLPs with 2 experts while the top 75% MLPs with 4 experts, reaching ~7B parameters in total. Top-1 gating is used to preserve 3B activated parameters per token. The progress would be updated in a biweekly schedule (totally 6 biweeks as estimated) and could be tracked in [Live](#-live). We later decide to name it as MiniMix to show our respect to Mixtral.
 
 [2023/12/27] Performance results are added for potential references in [Performance](#-performance). Still room for improvement, bravo!
 
@@ -52,7 +52,7 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 
 ## 📺 Live
 
-> MiniMA-MoE-4x3B
+> MiniMA-MoE-2/4x3B (a.k.a. MiniMix)
 
 **Training Losses**
 
@@ -63,7 +63,8 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 ||TFLOPs|MMLU (5-shot)|CEval (5-shot)|DROP (3-shot)|HumanEval (0-shot)|BBH (3-shot)|GSM8K (8-shot)|
 |--|--|--|--|--|--|--|--|
 |MiniMA-2-3B|13.4E9|40.14|44.65|23.10|14.63|31.43|8.87|
-|MiniMA-MoE-4x3B-Kickoff|+0.3E9|33.71|33.66|20.80|9.76|29.35|6.07|
+|MiniMA-MoE-2/4x3B-Kickoff|+0.3E9|33.71|33.66|20.80|9.76|29.35|6.07|
+|MiniMA-MoE-2/4x3B-Biweek1|+1.6E9|32.17|35.59|20.48|9.15|30.10|5.91|
 
 ## 📊 Performance
 
