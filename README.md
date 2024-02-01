@@ -74,7 +74,7 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 |Phixtral-2x2.8B|159.9E9|53.91|32.24|32.28|47.56|44.29|58.53|
 ||
 |MiniMA-2-3B|13.4E9|40.14|44.65|23.10|14.63|31.43|8.87|
-|MiniMA-MoE-2/4x3B-Kickoff|+0.1E9|34.30|33.51|21.34|10.37|30.35|6.60|
+|MiniMix-2/4x3B-Kickoff|+0.1E9|34.30|33.51|21.34|10.37|30.35|6.60|
 
 ## 📊 Performance
 
