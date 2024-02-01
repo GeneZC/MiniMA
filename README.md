@@ -32,6 +32,8 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 
 ## 🕰️ Updates
 
+[2024/1/31] We have to frustratingly announce that we have found a critical bug concerning about expert load balancing in training MiniMA-MoE. Therefore, we must revert to the very begining of training, pity : <
+
 [2024/1/3] [MT-Bench-ZH](./mt_bench_zh) is released to serve as a Chinese counterpart of multi-turn instruction-following evaluaion (e.g., MT-Bench). MT-Bench-ZH is essentially translated from MT-Bench by GPT-4 and further checked by human. On the MT-Bench-ZH, MiniChat-2-3B surpasses Qwen-Chat-1.8B and approximates Qwen-Chat-7B. And it indicates MiniChat-2-3B has a better bilingual ability than others (e.g., Phi-2, StableLM-Zephyr-3B, etc.).
 
 [2023/12/29] MiniMA-MoE is kicked off, aiming at upcycling MiniMA-2-3B to an MoE model. Following the [Pyramid-MoE](https://www.microsoft.com/en-us/research/blog/deepspeed-advancing-moe-inference-and-training-to-power-next-generation-ai-scale/) design, MiniMA-MoE has the bottom 25% MLPs with 2 experts while the top 75% MLPs with 4 experts, reaching ~7B parameters in total. Top-1 gating is used to preserve 3B activated parameters per token. The progress would be updated in a biweekly schedule (totally 6 biweeks as estimated) and could be tracked in [Live](#-live). We later decide to name it as MiniMix to show our respect to Mixtral.
@@ -39,6 +41,9 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 [2023/12/27] Performance results are added for potential references in [Performance](#-performance). Still room for improvement, bravo!
 
 [2023/12/27] MiniMA-2-3B and MiniChat-2-3B are successfully landed. MiniMA-2-3B is continued from MiniMA-3B with a more diverse data sources in Chinese, and MiniChat-2-3B are finetuned and optimized on a range of instruction and preference data. MiniMA-2-3B together with MiniMA-3B and other arts completes the new compute-performance pareto frontier, and MiniChat-2-3B achieves a score of 6.23 on [MT-Bench](https://huggingface.co/spaces/lmsys/chatbot-arena-leaderboard), surpassing Vicuna-7B and approximating LLaMA-2-Chat-7B.
+
+<details>
+<summary>Outdated updates</summary>
 
 [2023/11/27] MiniChat-1.5-3B (MiniChat-3B enhanced with NEFTune and DPO) achieves a win rate of 78.55 on AlpacaEval Leaderboard : ) Keep going! However, we have found a mistake in our MiniChat-3B submission. And the mistake should be [fixed](https://github.com/tatsu-lab/alpaca_eval/pull/176). MiniChat-3B instead achieves a win rate of 48.82 and can surpass ChatGLM2 but not Davinci-003.
 
@@ -49,6 +54,8 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 [2023/11/14] For models <= 3B on [Open LLM Leaderboard](https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard), MiniMA-3B surpasses ShearedLLaMA-2.7B and ranks #14, and MiniChat-3B (potentially with unidentified data contamination) surpasses Phi1.5 and ranks #2.
 
 [2023/11/14] We have released the paper, uploaded the checkpoints, and updated the codebase.
+
+</details>
 
 ## 📺 Live
 
@@ -67,8 +74,7 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 |Phixtral-2x2.8B|159.9E9|53.91|32.24|32.28|47.56|44.29|58.53|
 ||
 |MiniMA-2-3B|13.4E9|40.14|44.65|23.10|14.63|31.43|8.87|
-|MiniMA-MoE-2/4x3B-Kickoff|+0.3E9|33.71|33.66|20.80|9.76|29.35|6.07|
-|MiniMA-MoE-2/4x3B-Biweek1|+1.6E9|32.17|35.59|20.48|9.15|30.10|5.91|
+|MiniMA-MoE-2/4x3B-Kickoff|+0.1E9|34.30|33.51|21.34|10.37|30.35|6.60|
 
 ## 📊 Performance
 
