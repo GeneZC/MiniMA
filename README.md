@@ -32,6 +32,8 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 
 ## 🕰️ Updates
 
+[2024/2/17] Going through only 15% tokens out of all, MiniMix-2/4x3B (or MiniMA-MoE-2/4x3) upcycled from MiniMA-2 has completely overtaken MiniMA-2 on concerned tasks and are approximating considered baselines (e.g., DeepSeek-MoE-16B) with a full parameter amount of only 7B.
+
 [2024/1/31] We have to frustratingly announce that we have found a critical bug concerning about expert load balancing in training MiniMA-MoE. Therefore, we must revert to the very begining of training, pity : <
 
 [2024/1/3] [MT-Bench-ZH](./mt_bench_zh) is released to serve as a Chinese counterpart of multi-turn instruction-following evaluaion (e.g., MT-Bench). MT-Bench-ZH is essentially translated from MT-Bench by GPT-4 and further checked by human. On the MT-Bench-ZH, MiniChat-2-3B surpasses Qwen-Chat-1.8B and approximates Qwen-Chat-7B. And it indicates MiniChat-2-3B has a better bilingual ability than others (e.g., Phi-2, StableLM-Zephyr-3B, etc.).
@@ -75,6 +77,7 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 ||
 |MiniMA-2-3B|13.4E9|40.14|44.65|23.10|14.63|31.43|8.87|
 |MiniMix-2/4x3B-Kickoff|+0.1E9|34.30|33.51|21.34|10.37|30.35|6.60|
+|MiniMix-2/4x3B-Biweek1|+2.0E9|41.17|41.75|27.24|15.85|32.17|14.25|
 
 ## 📊 Performance
 
@@ -185,8 +188,7 @@ Detailed tutorials can be found [here](./TUTORIAL.md).
 - [x] Combined with preference optimization, e.g., DPO to MiniChat.
 - [x] A more diverse blend of data sources, e.g., Chinese wikipedia, books, etc.
 - [ ] MoE models, e.g. MiniMA-MoE.
-- [ ] Designed for speculative sampling, e.g., MiniMA to LLaMA for inference efficiency.
-- [ ] Designed with infinite inference length, e.g., attention sinks.
+- [ ] Incorporated with embedding ability, e.g., MiniEmbed.
 - [ ] Integrated with vision, e.g., MiniChat-V.
 
 ## 🤔️ Bugs or Questions?
