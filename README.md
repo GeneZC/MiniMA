@@ -78,6 +78,7 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 |MiniMA-2-3B|13.4E9|40.14|44.65|23.10|14.63|31.43|8.87|
 |MiniMix-2/4x3B-Kickoff|+0.1E9|34.30|33.51|21.34|10.37|30.35|6.60|
 |MiniMix-2/4x3B-Biweek1|+2.0E9|41.17|41.75|27.24|15.85|32.17|14.25|
+|MiniMix-2/4x3B-Biweek2|+4.0E9|41.35|40.79|28.62|18.90|31.66|13.34|
 
 ## 📊 Performance
 
