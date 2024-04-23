@@ -72,7 +72,9 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 ||TFLOPs|MMLU (5-shot)|CEval (5-shot)|DROP (3-shot)|HumanEval (0-shot)|BBH (3-shot)|GSM8K (8-shot)|
 |--|--|--|--|--|--|--|--|
 |LLaMA-MoE-v1-3.5B-4_16|84.0+4.2E9|26.69|24.67|23.40|6.10|30.26|5.38|
+|JetMoE-8B|16.5E9|48.24|36.03|30.63|24.39|33.86|40.71|
 |DeepSeek-MoE-16B-base|33.6E9|44.64|39.90|29.74|26.83|31.95|17.06|
+|MiniCPM-MoE-8x2B|14.4+24.0E9|55.38|54.01|31.39|47.56|37.15|54.81|
 |Qwen1.5-MoE-A2.7B|23.8+35.7E9|59.56|79.27|32.87|33.54|39.12|65.13|
 |Phixtral-2x2.8B|159.9E9|53.91|32.24|32.28|47.56|44.29|58.53|
 |Mixtral-8x7B-v0.1|336.0E9|70.50|53.94|57.74|32.32|48.79|59.59|
@@ -83,6 +85,7 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 |MiniMix-2/4x3B-Biweek2|+4.0E9|41.35|40.79|28.62|18.90|31.66|13.34|
 |MiniMix-2/4x3B-Biweek3|+6.0E9|41.58|44.21|30.68|17.68|32.91|16.07|
 |MiniMix-2/4x3B-Biweek4|+8.0E9|43.14|44.21|31.33|18.29|32.61|16.98|
+|MiniMix-2/4x3B-Biweek5|+10.0E9|43.75|45.10|32.47|18.29|33.71|21.99|
 
 ## 📊 Performance
 
