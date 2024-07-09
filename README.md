@@ -12,7 +12,11 @@ Language model (LM) distillation is a trending area that aims to distil the know
 However, the tale is not ever one-sided. Although a larger teacher LM has better performance than a smaller teacher LM, it is much more resource-demanding especially in the context of recent large LMs (LLMs). Consequently, instead of sticking to lifting the curse, leaving the curse as is should be arguably fine. Even better, in this paper, we reveal that the optimal capacity gap is almost consistent across different student scales and architectures, fortunately turning the curse into the law of capacity gap. The law later guides us to distil a 3B student LM (termed MiniMA) from a 7B teacher LM (adapted LLaMA2-7B). MiniMA is demonstrated to yield a new compute-performance pareto frontier among existing 3B LMs on commonly used benchmarks, and its instruction-tuned version (termed MiniChat) outperforms a wide range of 3B competitors in GPT4 evaluation and could even compete with several 7B chat models. 
 
 <p align="center">
-<img src="./assets/teaser_a.jpg" alt="teaser_a" width="400" /> <img src="./assets/teaser_d.jpg" alt="teaser_d" width="400" /> 
+<img src="./assets/teaser_a.jpg" alt="teaser_a" width="400" /> 
+</p>
+
+<p align="center">
+<img src="./assets/teaser_d.jpg" alt="teaser_d" width="600" /> 
 </p>
 
 <p align="center">
