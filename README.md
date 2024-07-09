@@ -5,14 +5,14 @@
 Logo for MiniMA designed with DALL·E
 </p>
 
-📑 [arXiv](https://arxiv.org/abs/2311.07052) | 👻 [GitHub](https://github.com/GeneZC/MiniMA) | 🤗 [HuggingFace-MiniMA](https://huggingface.co/GeneZC/MiniMA-3B) | 🤗 [HuggingFace-MiniChat](https://huggingface.co/GeneZC/MiniChat-3B) | 🤖 [ModelScope-MiniMA](https://modelscope.cn/models/GeneZC/MiniMA-3B) | 🤖 [ModelScope-MiniChat](https://modelscope.cn/models/GeneZC/MiniChat-3B) | 🤗 [HuggingFace-MiniChat-1.5](https://huggingface.co/GeneZC/MiniChat-1.5-3B) | 🤗 [HuggingFace-MiniMA-2](https://huggingface.co/GeneZC/MiniMA-2-3B) | 🤗 [HuggingFace-MiniChat-2](https://huggingface.co/GeneZC/MiniChat-2-3B)
+📑 [arXiv](https://arxiv.org/abs/2311.07052) | 👻 [GitHub](https://github.com/GeneZC/MiniMA) | 🤗 [HuggingFace-MiniMA-3B](https://huggingface.co/GeneZC/MiniMA-3B) | 🤗 [HuggingFace-MiniChat-3B](https://huggingface.co/GeneZC/MiniChat-3B) | 🤖 [ModelScope-MiniMA-3B](https://modelscope.cn/models/GeneZC/MiniMA-3B) | 🤖 [ModelScope-MiniChat-3B](https://modelscope.cn/models/GeneZC/MiniChat-3B) | 🤗 [HuggingFace-MiniChat-1.5-3B](https://huggingface.co/GeneZC/MiniChat-1.5-3B) | 🤗 [HuggingFace-MiniMA-2-3B](https://huggingface.co/GeneZC/MiniMA-2-3B) | 🤗 [HuggingFace-MiniChat-2-3B](https://huggingface.co/GeneZC/MiniChat-2-3B) | 🤗 [HuggingFace-MiniMA-2-1B](https://huggingface.co/GeneZC/MiniMA-2-1B) | 🤗 [HuggingFace-MiniLoong-3B](https://huggingface.co/GeneZC/MiniLoong-3B) | 🤗 [HuggingFace-MiniMix-2/4x3B](https://huggingface.co/GeneZC/MiniMix-2_4x3B)
 
 Language model (LM) distillation is a trending area that aims to distil the knowledge resided in a large teacher LM to a small student one. While various methods have been proposed to push the distillation to its limits, it is still a pain distilling LMs when a large capacity gap is exhibited between the teacher and the student LMs. The pain is mainly resulted by the curse of capacity gap, which describes that a larger teacher LM cannot always lead to a better student LM than one distilled from a smaller teacher LM due to the affect of capacity gap increment. That is, there is likely an optimal point yielding the best student LM along the scaling course of the teacher LM. Even worse, the curse of capacity gap can be only partly yet not fully lifted as indicated in previous studies.
 
 However, the tale is not ever one-sided. Although a larger teacher LM has better performance than a smaller teacher LM, it is much more resource-demanding especially in the context of recent large LMs (LLMs). Consequently, instead of sticking to lifting the curse, leaving the curse as is should be arguably fine. Even better, in this paper, we reveal that the optimal capacity gap is almost consistent across different student scales and architectures, fortunately turning the curse into the law of capacity gap. The law later guides us to distil a 3B student LM (termed MiniMA) from a 7B teacher LM (adapted LLaMA2-7B). MiniMA is demonstrated to yield a new compute-performance pareto frontier among existing 3B LMs on commonly used benchmarks, and its instruction-tuned version (termed MiniChat) outperforms a wide range of 3B competitors in GPT4 evaluation and could even compete with several 7B chat models. 
 
 <p align="center">
-<img src="./assets/teaser_a.jpg" alt="teaser_a" width="400" /> 
+<img src="./assets/teaser_a.jpg" alt="teaser_a" width="400" /> <img src="./assets/teaser_d.jpg" alt="teaser_d" width="400" /> 
 </p>
 
 <p align="center">
@@ -32,6 +32,8 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 
 ## 🕰️ Updates
 
+[2024/7/9] MiniMA-2-1B, MiniLoong-3B, and MiniMix-2/4x3B are landed. MiniMA-2-1B is the considered minimal language model in our plan, and is distilled from MiniMA-2-3B. MiniLoong-3B is trained by extending the context length of MiniMA-2-3B from 4K to 32K. And MiniMix-2/4x3B is the previously highlighted MoE language model upcycled from MiniMA-2-3B. Please refer to detailed results in later content.
+
 [2024/2/17] Going through only 15% tokens out of all, MiniMix-2/4x3B (or MiniMA-MoE-2/4x3) upcycled from MiniMA-2 has completely overtaken MiniMA-2 on concerned tasks and are approximating considered baselines (e.g., DeepSeek-MoE-16B) with a full parameter amount of only 7B.
 
 [2024/1/31] We have to frustratingly announce that we have found a critical bug concerning about expert load balancing in training MiniMA-MoE. Therefore, we must revert to the very begining of training, pity : <
@@ -42,10 +44,10 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 
 [2023/12/27] Performance results are added for potential references in [Performance](#-performance). Still room for improvement, bravo!
 
-[2023/12/27] MiniMA-2-3B and MiniChat-2-3B are successfully landed. MiniMA-2-3B is continued from MiniMA-3B with a more diverse data sources in Chinese, and MiniChat-2-3B are finetuned and optimized on a range of instruction and preference data. MiniMA-2-3B together with MiniMA-3B and other arts completes the new compute-performance pareto frontier, and MiniChat-2-3B achieves a score of 6.23 on [MT-Bench](https://huggingface.co/spaces/lmsys/chatbot-arena-leaderboard), surpassing Vicuna-7B and approximating LLaMA-2-Chat-7B.
-
 <details>
 <summary>Outdated updates</summary>
+
+[2023/12/27] MiniMA-2-3B and MiniChat-2-3B are successfully landed. MiniMA-2-3B is continued from MiniMA-3B with a more diverse data sources in Chinese, and MiniChat-2-3B are finetuned and optimized on a range of instruction and preference data. MiniMA-2-3B together with MiniMA-3B and other arts completes the new compute-performance pareto frontier, and MiniChat-2-3B achieves a score of 6.23 on [MT-Bench](https://huggingface.co/spaces/lmsys/chatbot-arena-leaderboard), surpassing Vicuna-7B and approximating LLaMA-2-Chat-7B.
 
 [2023/11/27] MiniChat-1.5-3B (MiniChat-3B enhanced with NEFTune and DPO) achieves a win rate of 78.55 on AlpacaEval Leaderboard : ) Keep going! However, we have found a mistake in our MiniChat-3B submission. And the mistake should be [fixed](https://github.com/tatsu-lab/alpaca_eval/pull/176). MiniChat-3B instead achieves a win rate of 48.82 and can surpass ChatGLM2 but not Davinci-003.
 
@@ -87,6 +89,7 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 |MiniMix-2/4x3B-Biweek4|+8.0E9|43.14|44.21|31.33|18.29|32.61|16.98|
 |MiniMix-2/4x3B-Biweek5|+10.0E9|43.75|45.10|32.47|18.29|33.71|21.99|
 |MiniMix-2/4x3B-Biweek6|+12.0E9|44.57|45.39|33.35|20.12|33.43|22.52|
+|MiniMix-2/4x3B-Release|+12.0E9|44.35|45.77|33.78|18.29|33.60|21.61|
 
 ## 📊 Performance
 
@@ -103,8 +106,10 @@ However, the tale is not ever one-sided. Although a larger teacher LM has better
 |LLaMA-2-7B|84.0E9|46.00|34.40|31.57|12.80|32.02|14.10|
 ||
 |MiniMA-3B|4.0E9|28.51|28.23|22.50|10.98|31.61|8.11|
-|MiniChat-3B|4.0E9|38.40|36.48|22.58|18.29|31.36|29.72|
+|MiniMA-2-1B|6.3E9|31.34|34.92|20.08|10.37|31.16|7.28|
 |MiniMA-2-3B|13.4E9|40.14|44.65|23.10|14.63|31.43|8.87|
+|MiniMix-2/4x3B|25.4E9|44.35|45.77|33.78|18.29|33.60|21.61|
+|MiniChat-3B|4.0E9|38.40|36.48|22.58|18.29|31.36|29.72|
 |MiniChat-2-3B|13.4E9|46.17|43.91|30.26|22.56|34.95|38.13|
 
 **Instruction-following Benchmarks**
@@ -194,10 +199,6 @@ Detailed tutorials can be found [here](./TUTORIAL.md).
 
 ## 🔮 Future Work
 
-- [x] Combined with preference optimization, e.g., DPO to MiniChat.
-- [x] A more diverse blend of data sources, e.g., Chinese wikipedia, books, etc.
-- [ ] MoE models, e.g. MiniMA-MoE.
-- [ ] Incorporated with embedding ability, e.g., MiniEmbed.
 - [ ] Integrated with vision, e.g., MiniChat-V.
 
 ## 🤔️ Bugs or Questions?
